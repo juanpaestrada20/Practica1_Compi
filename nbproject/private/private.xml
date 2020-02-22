@@ -4,6 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/juanp/Documents/NetBeansProjects/Practica1_Compi/src/main/Principal.java</file>
+            <file>file:/D:/juanp/Documents/NetBeansProjects/Practica1_Compi/src/main/AnalizadorLexico.java</file>
+            <file>file:/D:/juanp/Documents/NetBeansProjects/Practica1_Compi/src/main/Token.java</file>
+            <file>file:/D:/juanp/Documents/NetBeansProjects/Practica1_Compi/src/main/Error.java</file>
         </group>
     </open-files>
 </project-private>
