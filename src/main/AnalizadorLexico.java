@@ -90,7 +90,7 @@ public class AnalizadorLexico {
                         case '-':
                             columna++;
                             auxlex += c;
-                            agregarToken(Token.Tipo.CONCATENACION);
+                            agregarToken(Token.Tipo.GUION);
                             break;
                         case '>':
                             columna++;
@@ -189,6 +189,12 @@ public class AnalizadorLexico {
                 case 2:
                     switch (c) {
                         case '!':
+                            if (auxlex.length() > 1) {
+                                columna++;
+                                auxlex += c;
+                                agregarToken(Token.Tipo.COMENTARIO_MULTILINEA);
+                                estado = 2;
+                            }
                             columna++;
                             auxlex += c;
                             agregarToken(Token.Tipo.SIGNO_ADMIRACION);
@@ -393,10 +399,10 @@ public class AnalizadorLexico {
             while (it.hasNext()) {
                 Error valor = it.next();
                 escritura.println("<tr>"
-                        + "<td><center>" + valor.GetFila()+ "</center></td>"
+                        + "<td><center>" + valor.GetFila() + "</center></td>"
                         + "<td><center>" + valor.GetColumna() + "</center></td>"
-                        + "<td><center>" + valor.GetError()+ "</center></td>"
-                        + "<td><center>" + valor.GetDescripcion()+ "</center></td>"
+                        + "<td><center>" + valor.GetError() + "</center></td>"
+                        + "<td><center>" + valor.GetDescripcion() + "</center></td>"
                 );
 
                 escritura.println("</tr>");
@@ -421,5 +427,5 @@ public class AnalizadorLexico {
             JOptionPane.showMessageDialog(null, "Lo sentimos,no se puede abrir el archivo de forma automática, diríjase al destino indicado y ejecútelo manualmente: " + ruta + ".", "Sistema incompatible", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
 }
