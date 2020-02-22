@@ -26,7 +26,7 @@ public class AnalizadorLexico {
         fila = 1;
         columna = 0;
         auxlex = "";
-        char c;
+        Character c;
 
         for (int i = 0; i < entrada.length(); i++) {
             c = entrada.charAt(i);
@@ -150,7 +150,7 @@ public class AnalizadorLexico {
                             }
                             columna++;
                             auxlex += c;
-                            agregarError(auxlex, "No se ha reconocido el token");
+                            agregarError(auxlex);
                             break;
                     }
                     break;
@@ -257,10 +257,14 @@ public class AnalizadorLexico {
         auxlex = "";
     }
 
-    public void agregarError(String valor, String descripcion) {
-        errores.addLast(new Error(valor, descripcion, fila, columna));
+    public void agregarError(String valor) {
+        errores.addLast(new Error(valor, "Desconocido", fila, columna));
         auxlex = "";
         estado = 0;
+    }
+    
+    public LinkedList<Error> errores(){
+        return errores;
     }
 
 }
