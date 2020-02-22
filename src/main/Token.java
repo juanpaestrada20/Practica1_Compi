@@ -61,13 +61,13 @@ public class Token {
             case PALABRA_RESESERVADA:
                 return "Palabra Reservada";
             case SLASH:
-                return "/";
+                return "Diagonal";
             case MENOR_QUE:
-                return "<";
+                return "Signo Menor Que";
             case MAYOR_QUE:
-                return ">";
+                return "Signo Mayor Que";
             case SIGNO_ADMIRACION:
-                return "!";
+                return "Signo de Admiracion";
             case COMENTARIO:
                 return "Comentario";
             case COMENTARIO_MULTILINEA:
@@ -77,33 +77,33 @@ public class Token {
             case LLAVE_CIERRA:
                 return "Llave Cierra";
             case PORCENTAJE:
-                return "%";
+                return "Porcentaje";
             case GUION:
-                return "-";
+                return "Guion";
             case PUNTO_COMA:
-                return ";";
+                return "Punto y Coma";
             case ID:
                 return "Id";
             case COMILLA_DOBLE:
-                return "\"";
+                return "Comlla Doble";
             case CONCATENACION:
                 return "Concatenacion";
             case DISYUNCION:
                 return "Disyuncion";
             case SIGNO_INTERROGACION:
-                return "?";
+                return "Signo de Interrogacion";
             case ASTERISCO:
-                return "*";
+                return "Cerradura de Kleene";
             case SIGNO_MAS:
-                return "+";
+                return "Cerradura Positiva";
             case CONJUNTO:
                 return "Conjunto";
             case VIRGULILLA:
                 return "~";
             case COMA:
-                return ",";
+                return "Coma";
             case DOS_PUNTOS:
-                return ":";
+                return "Dos Puntos";
             case EXPRESION_REGULAR:
                 return "Expresion Regular";
             case LEXEMA:
@@ -125,6 +125,14 @@ public class Token {
 
     public void setTipoToken(Tipo tipoToken) {
         this.tipoToken = tipoToken;
+    }
+    
+    public int getFila(){
+        return fila;
+    }
+    
+    public int getColumna(){
+        return columna;
     }
 
 }

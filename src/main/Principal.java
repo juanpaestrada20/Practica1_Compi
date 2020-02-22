@@ -247,9 +247,19 @@ public class Principal extends javax.swing.JFrame {
         AnalizadorLexico analizador = new AnalizadorLexico();
         LinkedList<Token> listaToken = analizador.Escanner(entrada);
         if(analizador.errores().isEmpty()){
-            System.out.println("NO hay errores");
+            try {
+                analizador.generarHTML_Tokens();
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "No se pudo realizar el analisis, errores encontrados");
+            try {
+                analizador.generarHTML_Tokens();
+                analizador.generar_HTML_Errores();
+                JOptionPane.showMessageDialog(this, "No se pudo realizar el analisis, errores encontrados");
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
