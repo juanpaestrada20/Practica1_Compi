@@ -14,11 +14,13 @@ import java.net.IDN;
 public class Token {
 
     public enum Tipo {
+        PALABRA_RESESERVADA,
         SLASH,
         MENOR_QUE,
         MAYOR_QUE,
         SIGNO_ADMIRACION,
         COMENTARIO,
+        COMENTARIO_MULTILINEA,
         LLAVE_ABRE,
         LLAVE_CIERRA,
         PORCENTAJE,
@@ -37,14 +39,16 @@ public class Token {
         DOS_PUNTOS,
         EXPRESION_REGULAR,
         LEXEMA,
-        CADENA
+        CADENA,
+        DIGITO,
+        SIMBOLO
     }
 
     private Tipo tipoToken;
     private String valor;
     private int fila;
     private int columna;
-    
+
     public Token(Tipo tipoToken, String valor, int fila, int columna) {
         this.tipoToken = tipoToken;
         this.valor = valor;
@@ -54,6 +58,8 @@ public class Token {
 
     public String getTipoToken() {
         switch (tipoToken) {
+            case PALABRA_RESESERVADA:
+                return "Palabra Reservada";
             case SLASH:
                 return "/";
             case MENOR_QUE:
@@ -64,6 +70,8 @@ public class Token {
                 return "!";
             case COMENTARIO:
                 return "Comentario";
+            case COMENTARIO_MULTILINEA:
+                return "Comentario Multilinea";
             case LLAVE_ABRE:
                 return "Llave Abre";
             case LLAVE_CIERRA:
@@ -102,6 +110,10 @@ public class Token {
                 return "Lexema";
             case CADENA:
                 return "Cadena";
+            case DIGITO:
+                return "Digito";
+            case SIMBOLO:
+                return "Simbolo";
             default:
                 return "Caracter Desconocido";
         }
@@ -114,7 +126,5 @@ public class Token {
     public void setTipoToken(Tipo tipoToken) {
         this.tipoToken = tipoToken;
     }
-    
-    
 
 }
