@@ -36,15 +36,20 @@ public class Token {
         COMA,
         DOS_PUNTOS,
         EXPRESION_REGULAR,
-        LEXEMA
+        LEXEMA,
+        CADENA
     }
 
     private Tipo tipoToken;
     private String valor;
-
-    public Token(Tipo tipoToken, String valor) {
+    private int fila;
+    private int columna;
+    
+    public Token(Tipo tipoToken, String valor, int fila, int columna) {
         this.tipoToken = tipoToken;
         this.valor = valor;
+        this.fila = fila;
+        this.columna = columna;
     }
 
     public String getTipoToken() {
@@ -93,6 +98,10 @@ public class Token {
                 return ":";
             case EXPRESION_REGULAR:
                 return "Expresion Regular";
+            case LEXEMA:
+                return "Lexema";
+            case CADENA:
+                return "Cadena";
             default:
                 return "Caracter Desconocido";
         }
@@ -101,5 +110,11 @@ public class Token {
     public String getValor() {
         return valor;
     }
+
+    public void setTipoToken(Tipo tipoToken) {
+        this.tipoToken = tipoToken;
+    }
+    
+    
 
 }
