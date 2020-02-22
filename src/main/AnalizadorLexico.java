@@ -5,7 +5,16 @@
  */
 package main;
 
+import java.awt.Desktop;
+import java.awt.FileDialog;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import java.io.*;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -21,6 +30,7 @@ public class AnalizadorLexico {
     private LinkedList<Error> errores;
 
     public LinkedList<Token> Escanner(String entrada) {
+        errores = new LinkedList<Error>();
         salidaToken = new LinkedList<Token>();
         estado = 0;
         fila = 1;
@@ -137,15 +147,18 @@ public class AnalizadorLexico {
                             if (Character.isLetter(c)) {
                                 estado = 3;
                                 i--;
+                                break;
                             } else if (Character.isDigit(c)) {
                                 estado = 5;
                                 i--;
-                            } else{
-                                int ascii = (int)c;
-                                if((ascii >33 && ascii < 47) || ascii == 61 || ascii == 64 || (ascii >90 && ascii < 97) ){
+                                break;
+                            } else {
+                                int ascii = (int) c;
+                                if ((ascii > 33 && ascii < 47) || ascii == 61 || ascii == 64 || (ascii > 90 && ascii < 97)) {
                                     columna++;
-                                    auxlex+=c;
+                                    auxlex += c;
                                     agregarToken(Token.Tipo.SIMBOLO);
+                                    break;
                                 }
                             }
                             columna++;
@@ -202,7 +215,7 @@ public class AnalizadorLexico {
                     auxlex += c;
                     columna++;
                     if (auxlex.toLowerCase().compareTo("conj") == 0) {
-                        if (entrada.charAt(i + 1) == ' ') {
+                        if (!Character.isLetter(entrada.charAt(i + 1))) {
                             agregarToken(Token.Tipo.PALABRA_RESESERVADA);
                         } else {
                             estado = 3;
@@ -236,10 +249,10 @@ public class AnalizadorLexico {
                     }
                     break;
                 case 5:
-                    if(Character.isDigit(c)){
+                    if (Character.isDigit(c)) {
                         columna++;
-                        auxlex+=c;
-                    }else{
+                        auxlex += c;
+                    } else {
                         i--;
                         columna--;
                         agregarToken(Token.Tipo.DIGITO);
@@ -262,9 +275,151 @@ public class AnalizadorLexico {
         auxlex = "";
         estado = 0;
     }
-    
-    public LinkedList<Error> errores(){
+
+    public LinkedList<Error> errores() {
         return errores;
+    }
+
+    public void generarHTML_Tokens() throws IOException {
+        Iterator<Token> it = salidaToken.iterator();
+        javax.swing.JFileChooser jF1 = new javax.swing.JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo HTML", "html");
+        jF1.setFileFilter(filtro);
+        String ruta = "";
+        try {
+            if (jF1.showSaveDialog(null) == jF1.APPROVE_OPTION) {
+                ruta = jF1.getSelectedFile().getAbsolutePath() + ".html";
+
+                FileOutputStream filr;
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
+            FileWriter archivo = new FileWriter(ruta);
+
+            PrintWriter escritura = new PrintWriter(archivo);
+
+            escritura.println("<html>");
+            escritura.println("<head>"
+                    + "<meta charset='utf-8'>"
+                    + "<title>Tokens</title>");
+
+            escritura.println(" <body>");
+            escritura.println(" <h1><center>Tokens</center></h1>");
+            escritura.println("<center>"
+                    + "<p>"
+                    + "<br>"
+                    + "</p>"
+                    + "<table border= 4>"
+                    + "<tr>"
+                    + "<td><center><b>Fila</b></center></td>"
+                    + "<td><center><b>Columna</b></center></td>"
+                    + "<td><center><b>Valor</b></center></td>"
+                    + "<td><center><b>Tipo</b></center></td>"
+                    + "</tr>");
+            while (it.hasNext()) {
+                Token valor = it.next();
+                escritura.println("<tr>"
+                        + "<td><center>" + valor.getFila() + "</center></td>"
+                        + "<td><center>" + valor.getColumna() + "</center></td>"
+                        + "<td><center>" + valor.getValor() + "</center></td>"
+                        + "<td><center>" + valor.getTipoToken() + "</center></td>"
+                );
+
+                escritura.println("</tr>");
+                escritura.println("</center>");
+            }
+            escritura.println("</table>");
+            escritura.println("<br><br>");
+
+            escritura.println(" </body>");
+            escritura.println("</html>");
+
+            archivo.close();
+        } catch (IOException exc) {
+        }
+
+        Desktop abrir;
+        File file = new File(ruta);
+        if (Desktop.isDesktopSupported()) {
+            abrir = Desktop.getDesktop();
+            abrir.open(file);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lo sentimos,no se puede abrir el archivo de forma automática, diríjase al destino indicado y ejecútelo manualmente: " + ruta + ".", "Sistema incompatible", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void generar_HTML_Errores() throws IOException {
+        Iterator<Error> it = errores.iterator();
+        javax.swing.JFileChooser jF1 = new javax.swing.JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo HTML", "html");
+        jF1.setFileFilter(filtro);
+        String ruta = "";
+        try {
+            if (jF1.showSaveDialog(null) == jF1.APPROVE_OPTION) {
+                ruta = jF1.getSelectedFile().getAbsolutePath() + ".html";
+
+                FileOutputStream filr;
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        try {
+            FileWriter archivo = new FileWriter(ruta);
+
+            PrintWriter escritura = new PrintWriter(archivo);
+
+            escritura.println("<html>");
+            escritura.println("<head>"
+                    + "<meta charset='utf-8'>"
+                    + "<title>Tokens</title>");
+
+            escritura.println(" <body>");
+            escritura.println(" <h1><center>Errores</center></h1>");
+            escritura.println("<center>"
+                    + "<p>"
+                    + "<br>"
+                    + "</p>"
+                    + "<table border= 4>"
+                    + "<tr>"
+                    + "<td><center><b>Fila</b></center></td>"
+                    + "<td><center><b>Columna</b></center></td>"
+                    + "<td><center><b>Valor</b></center></td>"
+                    + "<td><center><b>Descripcion</b></center></td>"
+                    + "</tr>");
+            while (it.hasNext()) {
+                Error valor = it.next();
+                escritura.println("<tr>"
+                        + "<td><center>" + valor.GetFila()+ "</center></td>"
+                        + "<td><center>" + valor.GetColumna() + "</center></td>"
+                        + "<td><center>" + valor.GetError()+ "</center></td>"
+                        + "<td><center>" + valor.GetDescripcion()+ "</center></td>"
+                );
+
+                escritura.println("</tr>");
+                escritura.println("</center>");
+            }
+            escritura.println("</table>");
+            escritura.println("<br><br>");
+
+            escritura.println(" </body>");
+            escritura.println("</html>");
+
+            archivo.close();
+        } catch (IOException exc) {
+        }
+
+        Desktop abrir;
+        File file = new File(ruta);
+        if (Desktop.isDesktopSupported()) {
+            abrir = Desktop.getDesktop();
+            abrir.open(file);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lo sentimos,no se puede abrir el archivo de forma automática, diríjase al destino indicado y ejecútelo manualmente: " + ruta + ".", "Sistema incompatible", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }
